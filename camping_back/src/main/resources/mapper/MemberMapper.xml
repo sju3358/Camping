@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.ssafy.camping.member.model.mapper.MemberMapper">
+
+	<select id="findUserById" parameterType="String" resultType="Member">
+		SELECT * FROM user where id = #{id}
+	</select>
+
+	<select id="findUserByIdx" parameterType="int" resultType="Member">
+		SELECT * FROM user where idx = #{idx}
+	</select>
+
+	<select id="findUserIdxById" parameterType="String" resultType="int">
+		SELECT idx FROM user where id = #{id}
+	</select>
+
+	<insert id="insertUser" parameterType="Member">
+		INSERT INTO user (name,id,pwd) values(#{name},#{id},#{pwd})
+	</insert>
+
+	<update id="updateUserPasswordByIdx" parameterType="HashMap">
+		UPDATE user SET pwd = #{pwd} WHERE idx = #{idx}
+	</update>
+
+	<delete id="deleteUserByIdx" parameterType="int">
+		DELETE FROM user where idx=#{idx}
+	</delete>
+
+</mapper>
+
+

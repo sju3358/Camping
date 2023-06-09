@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.ssafy.camping.camp.model.mapper.CampMapper">
+	
+	
+	
+	<select id="selectAll" parameterType="int" resultType="camp">
+		SELECT ai.content_id, ai.title, ai.addr1, ai.sido_code, ai.gugun_code, ai.latitude, ai.longitude, ai.first_image, ad.overview, (select count(f.content_id) from favorites f WHERE ai.content_id = f.content_id) count_favorites
+		FROM attraction_info ai, attraction_description ad
+		WHERE ai.content_id = ad.content_id
+		AND ai.title like "%캠핑%"
+		ORDER BY count_favorites desc
+		LIMIT 20 OFFSET #{now}
+	</select>
+
+
+	<select id="selectSidoCode" resultType="sido">
+		SELECT *
+		FROM sido;
+	</select>
+	
+	<select id="selectGugunCode" parameterType="int" resultType="gugun">
+		SELECT *
+		FROM gugun
+		WHERE sido_code=#{sido_code}
+	</select>
+	
+	
+	<select id="selectBySidoGugun" parameterType="map" resultType="camp">
+		SELECT ai.content_id, ai.title, ai.addr1, ai.sido_code, ai.gugun_code, ai.latitude, ai.longitude, ai.first_image, ad.overview, (select count(f.content_id) from favorites f WHERE ai.content_id = f.content_id) count_favorites
+		FROM attraction_info ai, attraction_description ad
+		WHERE ai.content_id = ad.content_id
+		AND ai.title like "%캠핑%"
+		AND ai.sido_code=#{sido_code}
+		AND ai.gugun_code=#{gugun_code}
+	</select>
+	
+	<select id="selectById" parameterType="int" resultType="camp">
+		SELECT ai.content_id, ai.title, ai.addr1, ai.sido_code, ai.gugun_code, ai.latitude, ai.longitude, ai.first_image, ad.overview, (select count(f.content_id) from favorites f WHERE ai.content_id = f.content_id) count_favorites
+		FROM attraction_info ai, attraction_description ad
+		WHERE ai.content_id = ad.content_id
+		AND ai.title like "%캠핑%"
+		AND ai.content_id=#{content_id}
+	</select>
+
+	<select id="countPage" resultType="int">
+		SELECT ceil(count(ai.content_id) / 20)
+		FROM attraction_info ai, attraction_description ad
+		WHERE ai.content_id = ad.content_id
+		AND ai.title like "%캠핑%"
+	</select>
+</mapper>
+
+

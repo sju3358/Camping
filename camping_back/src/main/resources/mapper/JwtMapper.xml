@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.ssafy.camping.member.model.mapper.JwtTokenMapper">
+	<select id="findRefreshTokenByUserIdx" parameterType="int" resultType="string">
+		select * from token
+		where useridx = #{idx}
+	</select>
+
+	<insert id="insertRefreshTokenByUserIdx" parameterType="HashMap">
+		insert into token values (#{token},#{userIdx})
+	</insert>
+
+	<update id="updateRefreshTokenByUserIdx" parameterType="HashMap">
+		update token
+		set token = #{token}
+		where useridx = #{userid}
+	</update>
+
+	<delete id="deleteRefreshTokenByUserIdx" parameterType="int">
+		delete from token
+		where useridx = #{idx}
+	</delete>
+</mapper>
+
+

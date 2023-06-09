@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.ssafy.camping.board.model.mapper.BoardMapper">
+	
+	
+	
+	<select id="selectAll" parameterType="int" resultType="board">
+		SELECT *, (SELECT COUNT(r.content_id) FROM review r WHERE r.content_id = b.idx)
+		FROM board b
+		ORDER BY write_date desc
+		LIMIT 20 OFFSET #{now}
+	</select>
+
+	<select id="selectBoardByIdx" parameterType="int" resultType="board">
+		SELECT *, (SELECT COUNT(r.content_id) FROM review r WHERE r.content_id = b.idx)
+		FROM board b
+		WHERE idx=#{idx}
+	</select>
+
+	<select id="selectBoardByTitle" parameterType="Map" resultType="board">
+		SELECT *, (SELECT COUNT(r.content_id) FROM review r WHERE r.content_id = b.idx)
+		FROM board b
+		WHERE title LIKE '%${title}%'
+		ORDER BY write_date desc
+		LIMIT 20 OFFSET #{now}
+	</select>
+	
+	
+	<insert id="insertBoard" parameterType="board" >
+		INSERT INTO board(user_idx, title, text) VALUES(#{user_idx},#{title},#{text})
+	</insert>
+	
+	<delete id="deleteByIdx" parameterType="int">
+		DELETE FROM board
+		WHERE idx=#{idx}
+	</delete>
+
+	<select id="countPage" resultType="int">
+		SELECT ceil(count(*) / 20)
+		FROM board
+	</select>
+
+	<select id="countSearchPage" parameterType="String" resultType="int">
+		SELECT ceil(count(*) / 20)
+		FROM board
+		WHERE title LIKE '%${title}%'
+	</select>
+</mapper>
+
+

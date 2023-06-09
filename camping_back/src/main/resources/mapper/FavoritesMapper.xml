@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.camping.favorites.model.mapper.FavoritesMapper">
+
+    
+    
+    <select id="selectByUserIdx" parameterType="int" resultType="Favorites">
+        SELECT *
+        FROM favorites
+        WHERE user_idx=#{user_idx}
+    </select>
+
+    <select id="selectExists" parameterType="map" resultType="int">
+        SELECT EXISTS (SELECT idx FROM favorites WHERE content_id=#{content_id} AND user_idx=#{user_idx});
+    </select>
+
+    <insert id="insertFavorites" parameterType="favorites">
+        INSERT INTO favorites(content_id, user_idx) VALUES (#{content_id}, #{user_idx})
+    </insert>
+
+    <delete id="deleteFavorites" parameterType="map">
+        DELETE FROM favorites
+        WHERE content_id=#{content_id}
+        AND user_idx=#{user_idx}
+    </delete>
+</mapper>
